@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Texarkana Opportunity Zone Map</title>
+  <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
+  <link href="https://api.mapbox.com/mapbox-gl-js/v3.13.0/mapbox-gl.css" rel="stylesheet">
+  <script src="https://api.mapbox.com/mapbox-gl-js/v3.13.0/mapbox-gl.js"></script>
+  <style>
+    body { margin: 0; padding: 0; }
+    #map { position: absolute; top: 0; bottom: 0; width: 100%; }
+    .mapboxgl-popup-content {
+      font-family: sans-serif;
+      font-size: 13px;
+    }
+
+    .custom-marker {
+      width: 16px;
+      height: 16px;
+      background-color: #227af7;
+      border: 2px solid white;
+      border-radius: 50%;
+      box-shadow: 0 0 4px rgba(0,0,0,0.3);
+    }
+  </style>
+</head>
+<body>
+<div id="map"></div>
+<script>
+  mapboxgl.accessToken = 'pk.eyJ1IjoiYnltYXJrYWxsYW4iLCJhIjoiY21kMmc5bWhxMGJ3YzJscTMyMnk0aHA2cSJ9.QaIipuik28SSrWb-_L3L0g';
+
+  const map = new mapboxgl.Map({
+    container: 'map',
+    style: 'mapbox://styles/bymarkallan/cmd39ol2s01m101s4asoi38rw',
+    center: [-94.042, 33.425], // Texarkana, TX
+    zoom: 12
+  });
+
+  const listings = [
+    {
+      address: "100 Main St, Texarkana, TX 75501",
+      type: "Office",
+      size: "29,000",
+      price: "$0",
+      url: "https://www.crexi.com/properties/944601/texas-hotel-mccartney",
+      coordinates: [-94.0434217, 33.4204174]
+    },
+    {
+      address: "311 W Broad St, Texarkana, TX 75501",
+      type: "Mixed Use",
+      size: "—",
+      price: "$85,000",
+      url: "https://www.crexi.com/properties/1920153/texas-311-w-broad-st",
+      coordinates: [-94.0455927, 33.4199984]
+    },
+    {
+      address: "601 W 7th St, Texarkana, TX 75501",
+      type: "Retail",
+      size: "580sqft",
+      price: "$45,000",
+      url: "https://www.crexi.com/properties/1920155/texas-601-w-7th-st",
+      coordinates: [-94.0453880, 33.4199770]
+    },
+    {
+      address: "1103 Spruce St, Texarkana, TX 75501",
+      type: "Commercial Land",
+      size: "0.32 Acres",
+      price: "$125,000",
+      url: "https://www.crexi.com/properties/1675566/texas-spruce-st-032-ac",
+      coordinates: [-94.0517617, 33.4284204]
+    }
+    // Add remaining listings here
+  ];
+
+  listings.forEach((property) => {
+    const el = document.createElement('div');
+    el.className = 'custom-marker';
+
+    new mapboxgl.Marker(el)
+      .setLngLat(property.coordinates)
+      .setPopup(
+        new mapboxgl.Popup({ offset: 25 })
+          .setHTML(`
+            <div>
+              <strong>${property.address}</strong><br>
+              <em>${property.type}</em><br>
+              ${property.size} — ${property.price}<br>
+              <a href="${property.url}" target="_blank">View Listing</a>
+            </div>
+          `)
+      )
+      .addTo(map);
+  });
+</script>
+</body>
+</html>
